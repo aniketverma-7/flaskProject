@@ -15,10 +15,10 @@
         }
 
         .graph-button:hover {
- background-color: rgba(255, 255, 255, 0.15);
+            background-color: #00fae2;
         }
         .graph-button {
-        background-color: #000000;
+        background-color: #3498db;
         color: #fff;
         padding: 10px 20px;
         margin: 0 10px;
@@ -46,19 +46,19 @@
 </style>
 
 <div class="buttons-container">
-    <form action="{{ url_for('home.change_graph_view', view=0) }}" method="get">
+    <form action="{{ url_for('home.change_graph_view', view=0, type=1) }}" method="get">
         <button type="submit" class="graph-button">Bar Graph</button>
     </form>
-    <form action="{{ url_for('home.change_graph_view', view=1) }}" method="get">
+    <form action="{{ url_for('home.change_graph_view', view=1, type=1) }}" method="get">
         <button type="submit" class="graph-button">Line Graph</button>
     </form>
-    <form action="{{ url_for('home.change_graph_view', view=2) }}" method="get">
+    <form action="{{ url_for('home.change_graph_view', view=2, type=1) }}" method="get">
         <button type="submit" class="graph-button">Pie Chart</button>
     </form>
-    <form action="{{ url_for('home.change_graph_view', view=3) }}" method="get">
+    <form action="{{ url_for('home.change_graph_view',view=3, type=1) }}" method="get">
         <button type="submit" class="graph-button">Radar Chart</button>
     </form>
-    <form action="{{ url_for('home.change_graph_view', view=4) }}" method="get">
+    <form action="{{ url_for('home.change_graph_view',view=4, type=1) }}" method="get">
         <button type="submit" class="graph-button">Donut Chart</button>
     </form>
 </div>

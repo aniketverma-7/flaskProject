@@ -4,9 +4,9 @@
 <script>
     // Sample Data (Replace with actual data)
     var energyCostData = {
-        labels: ["Device 1", "Device 2", "Device 3"],
+        labels: labels | tojson,
         datasets: [{
-            data: [40, 30, 30],
+            data: values | tojson,
             backgroundColor: ['#FF6384', '#FF3030', '#FFCE56'],
             hoverOffset: 4
         }]

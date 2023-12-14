@@ -1,13 +1,13 @@
 <!-- Daily Energy Consumption Graph -->
-<canvas id="dailyEnergyChart" width="800" height="400"></canvas>
+<canvas id="dailyEnergyChart" width="750" height="400"></canvas>
 
 <script>
-    // Sample Data (Replace with actual data)
+    // Bar Graph
     var dailyEnergyData = {
-        labels: ["Day 1", "Day 2", "Day 3", "Day 4", "Day 5", "Day 6", "Day 7"].reverse(),
+        labels: labels,
         datasets: [{
-            label: 'Daily Energy Consumption',
-            data: [10, 15, 12, 18, 14, 43, 23],
+            label: label,
+            data: data ,
             backgroundColor: 'rgba(75, 192, 192, 0.2)',
             borderColor: 'rgba(75, 192, 192, 1)',
             borderWidth: 1

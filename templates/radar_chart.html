@@ -4,10 +4,10 @@
 <script>
     // Sample Data (Replace with actual data)
     var peakUsageData = {
-        labels: ["Device 1", "Device 2", "Device 3", "Device 4", "Device 5"],
+        labels: labels | tojson,
         datasets: [{
-            label: 'Peak Usage',
-            data: [80, 60, 75, 90, 85],
+            label:label | tojson,
+            data: values | tojson,
             backgroundColor: 'rgba(255, 99, 132, 0.2)',
             borderColor: 'rgba(255, 99, 132, 1)',
             borderWidth: 2,

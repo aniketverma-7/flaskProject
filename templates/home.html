@@ -1,7 +1,160 @@
 {% extends "navigation.html" %}
 
 {% block content %}
-    {% include data %}
+    {% include 'choice.html' %}
+    {% if values|length == 0 or label|length == 0 or labels|length == 0 %}
+        <h1>No Data at the moment</h1>
+    {% else %}
+        <canvas id="chart" width="750" height="400"></canvas>
+        {% if file == 'bar_graph.html' %}
+            <script>
+                // Ensure the data is properly passed from the server-side
+                var labels = {{ labels | tojson }};
+                var label = {{ label | tojson }};
+                var values = {{ values | tojson }};
+
+                // Bar Graph
+                var dailyEnergyData = {
+                    labels: labels,
+                    datasets: [{
+                        label: label,
+                        data: values,
+                        backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                        borderColor: 'rgba(75, 192, 192, 1)',
+                        borderWidth: 1
+                    }]
+                };
+
+                // Get the canvas element
+                var dailyEnergyCanvas = document.getElementById('chart').getContext('2d');
+
+                // Create the chart
+                var dailyEnergyChart = new Chart(dailyEnergyCanvas, {
+                    type: 'bar',
+                    data: dailyEnergyData,
+                    options: {
+                        scales: {
+                            x: {type: 'category', title: {display: true, text: 'Days'}},
+                            y: {beginAtZero: true, title: {display: true, text: 'Energy Consumption'}}
+                        }
+                    }
+                });
+            </script>
+        {% elif file == 'donut_chart.html' %}
+            <script>
+                var labels = {{ labels | tojson }};
+                var label = {{ label | tojson }};
+                var values = {{ values | tojson }};
+                // Ensure the data is properly passed from the server-side
+
+
+                // Donut Chart
+                var energyCostData = {
+                    labels: labels,
+                    datasets: [{
+                        data: values,
+                        backgroundColor: ['#FF6384', '#FF3030', '#FFCE56'],
+                        hoverOffset: 4
+                    }]
+                };
+
+                // Get the canvas element
+                var energyCostDonutCanvas = document.getElementById('chart').getContext('2d');
+
+                // Create the chart
+                var energyCostDonutChart = new Chart(energyCostDonutCanvas, {
+                    type: 'doughnut',
+                    data: energyCostData
+                });
+            </script>
+        {% elif file == 'radar_chart.html' %}
+            <script>
+                var labels = {{ labels | tojson }};
+                var label = {{ label | tojson }};
+                var values = {{ values | tojson }};
+                // Radar Chart
+                var peakUsageData = {
+                    labels: labels,
+                    datasets: [{
+                        label: label,
+                        data: values,
+                        backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                        borderColor: 'rgba(255, 99, 132, 1)',
+                        borderWidth: 2,
+                        fill: true
+                    }]
+                };
+
+                // Get the canvas element
+                var peakUsageRadarCanvas = document.getElementById('chart').getContext('2d');
+
+                // Create the chart
+                var peakUsageRadarChart = new Chart(peakUsageRadarCanvas, {
+                    type: 'radar',
+                    data: peakUsageData
+                });
+
+            </script>
+        {% elif file == 'line_graph.html' %}
+            <script>
+                var labels = {{ labels | tojson }};
+                var label = {{ label | tojson }};
+                var values = {{ values | tojson }};
+                // Line Chart
+                var averageComparisonData = {
+                    labels: labels,
+                    datasets: [{
+                        label: label,
+                        data: values,
+                        borderColor: 'rgba(75, 192, 192, 1)',
+                        borderWidth: 2,
+                        fill: false
+                    }]
+                };
+
+                // Get the canvas element
+                var averageComparisonCanvas = document.getElementById('chart').getContext('2d');
+
+                // Create the chart
+                var averageComparisonChart = new Chart(averageComparisonCanvas, {
+                    type: 'line',
+                    data: averageComparisonData,
+                    options: {
+                        scales: {
+                            x: {type: 'category', title: {display: true, text: 'Months'}},
+                            y: {beginAtZero: true, title: {display: true, text: 'Energy Consumption'}}
+                        }
+                    }
+                });
+            </script>
+        {% elif file == 'pie_chart.html' %}
+            <script>
+                var labels = {{ labels | tojson }};
+                var label = {{ label | tojson }};
+                var values = {{ values | tojson }};
+                // Pie Chart
+                var deviceEnergyData = {
+                    labels: labels,
+                    datasets: [{
+                        data: values,
+                        backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56', '#4CAF50'],
+                        hoverOffset: 4
+                    }]
+                };
+
+                // Get the canvas element
+                var deviceEnergyPieCanvas = document.getElementById('chart').getContext('2d');
+
+                // Create the chart
+                var deviceEnergyPieChart = new Chart(deviceEnergyPieCanvas, {
+                    type: 'pie',
+                    data: deviceEnergyData,
+                    options: {
+                        plugins: {legend: {position: 'right'}}
+                    }
+                });
+            </script>
+        {% endif %}
+    {% endif %}
     {% include 'footer.html' %}
 {% endblock %}
-

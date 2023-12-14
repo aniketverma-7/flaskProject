@@ -2,11 +2,11 @@
 <canvas id="deviceEnergyPieChart" width="400" height="400"></canvas>
 
 <script>
-    // Sample Data (Replace with actual data)
+    // Pie Chart
     var deviceEnergyData = {
-        labels: ["Device 1", "Device 2", "Device 3", "Device 4"],
+        labels: labels | tojson,
         datasets: [{
-            data: [25, 30, 15, 30],
+            data: values | tojson,
             backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56', '#4CAF50'],
             hoverOffset: 4
         }]
