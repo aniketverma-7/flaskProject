@@ -117,7 +117,7 @@
 
  <script>
     function auth(email, password) {
-        var userID = document.getElementById('email').value;
+        var email = document.getElementById('email').value;
         var password = document.getElementById('password').value;
 
         // Make an AJAX request to the Flask route
@@ -126,7 +126,7 @@
         xhr.setRequestHeader('Content-Type', 'application/json');
 
         // Convert data to JSON format
-        var data = JSON.stringify({ userID: userID, password: password });
+        var data = JSON.stringify({ email: email, password: password });
 
         xhr.onload = function () {
             if (xhr.status === 200) {

@@ -1,6 +1,6 @@
 {% extends "navigation.html" %}
 {% block content %}
-        <style>
+    <style>
         body {
             font-family: Arial, sans-serif;
             margin: 0;
@@ -64,110 +64,110 @@
         <div class="scrollable-section left-section">
             <!-- Content for the first section goes here -->
             <h2>Service Locations</h2>
-                 <table>
-        <thead>
-            <tr>
-                <th>No.</th>
-                <th>Unit</th>
-                <th>Block</th>
-                <th>Street</th>
-                <th>Occupants</th>
-                <th>Bedrooms</th>
-                <th>Zipcode</th>
-                <th>Square Foot</th>
-                <th>Move-in Date</th>
-                <th>City</th>
-                <th>State</th>
-                <th>ACTION</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for service_address in service_locations %}
+            <table>
+                <thead>
                 <tr>
-                    <td>{{ loop.index }}</td>
-                    <td>{{ service_address[2] }}</td>
-                    <td>{{ service_address[3] }}</td>
-                    <td>{{ service_address[4] }}</td>
-                    <td>{{ service_address[5] }}</td>
-                    <td>{{ service_address[6] }}</td>
-                    <td>{{ service_address[7] }}</td>
-                    <td>{{ service_address[8] }}</td>
-                    <td>{{ service_address[9] }}</td>
-                    <td>{{ service_address[10] }}</td>
-                    <td>{{ service_address[11] }}</td>
-                    <td><a href="#">DELETE</a></td>
+                    <th>No.</th>
+                    <th>Unit</th>
+                    <th>Block</th>
+                    <th>Street</th>
+                    <th>Occupants</th>
+                    <th>Bedrooms</th>
+                    <th>Zipcode</th>
+                    <th>Square Foot</th>
+                    <th>Move-in Date</th>
+                    <th>City</th>
+                    <th>State</th>
+                    <th>ACTION</th>
                 </tr>
-            {% endfor %}
-        </tbody>
-    </table>
+                </thead>
+                <tbody>
+                {% for service_address in service_locations %}
+                    <tr>
+                        <td>{{ loop.index }}</td>
+                        <td>{{ service_address[2] }}</td>
+                        <td>{{ service_address[3] }}</td>
+                        <td>{{ service_address[4] }}</td>
+                        <td>{{ service_address[5] }}</td>
+                        <td>{{ service_address[6] }}</td>
+                        <td>{{ service_address[7] }}</td>
+                        <td>{{ service_address[8] }}</td>
+                        <td>{{ service_address[9] }}</td>
+                        <td>{{ service_address[10] }}</td>
+                        <td>{{ service_address[11] }}</td>
+                        <td><a href="#">DELETE</a></td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
         </div>
 
-            <div class="form-container">
-                <div class="scrollable-section">
-                    <h2>Add Service Location</h2>
+        <div class="form-container">
+            <div class="scrollable-section">
+                <h2>Add Service Location</h2>
 
-                    <form id="residenceForm">
-                        <!-- Your form content goes here -->
-                        <div class="form-group">
-                            <label for="apartmentNumber">Apartment Number:</label>
-                            <input type="text" id="apartmentNumber" name="apartmentNumber"
-                                   placeholder="Enter Apartment Number">
-                        </div>
+                <form id="residenceForm">
+                    <!-- Your form content goes here -->
+                    <div class="form-group">
+                        <label for="apartmentNumber">Apartment Number:</label>
+                        <input type="text" id="apartmentNumber" name="apartmentNumber"
+                               placeholder="Enter Apartment Number">
+                    </div>
 
-                        <div class="form-group">
-                            <label for="blockNumber">Block Number:</label>
-                            <input type="number" id="blockNumber" name="blockNumber" placeholder="Enter Block Number">
-                        </div>
+                    <div class="form-group">
+                        <label for="blockNumber">Block Number:</label>
+                        <input type="number" id="blockNumber" name="blockNumber" placeholder="Enter Block Number">
+                    </div>
 
-                        <div class="form-group">
-                            <label for="streetName">Street Name:</label>
-                            <input type="text" id="streetName" name="streetName" placeholder="Enter Street Name">
-                        </div>
+                    <div class="form-group">
+                        <label for="streetName">Street Name:</label>
+                        <input type="text" id="streetName" name="streetName" placeholder="Enter Street Name">
+                    </div>
 
-                        <div class="form-group">
-                            <label for="city">City:</label>
-                            <input type="text" id="city" name="city" placeholder="Enter City">
-                        </div>
+                    <div class="form-group">
+                        <label for="city">City:</label>
+                        <input type="text" id="city" name="city" placeholder="Enter City">
+                    </div>
 
-                        <div class="form-group">
-                            <label for="state">State:</label>
-                            <input type="text" id="state" name="state" placeholder="Enter State">
-                        </div>
+                    <div class="form-group">
+                        <label for="state">State:</label>
+                        <input type="text" id="state" name="state" placeholder="Enter State">
+                    </div>
 
-                        <div class="form-group">
-                            <label for="zipCode">Zip Code:</label>
-                            <input type="number" id="zipCode" name="zipCode" placeholder="Enter Zip Code">
-                        </div>
+                    <div class="form-group">
+                        <label for="zipCode">Zip Code:</label>
+                        <input type="number" id="zipCode" name="zipCode" placeholder="Enter Zip Code">
+                    </div>
 
-                        <div class="form-group">
-                            <label for="squareFoot">Square Foot:</label>
-                            <input type="number" id="squareFoot" name="squareFoot" placeholder="Enter Square Foot">
-                        </div>
+                    <div class="form-group">
+                        <label for="squareFoot">Square Foot:</label>
+                        <input type="number" id="squareFoot" name="squareFoot" placeholder="Enter Square Foot">
+                    </div>
 
-                        <div class="form-group">
-                            <label for="occupants">Number of Occupants:</label>
-                            <input type="number" id="occupants" name="occupants"
-                                   placeholder="Enter Number of Occupants">
-                        </div>
+                    <div class="form-group">
+                        <label for="occupants">Number of Occupants:</label>
+                        <input type="number" id="occupants" name="occupants"
+                               placeholder="Enter Number of Occupants">
+                    </div>
 
-                        <div class="form-group">
-                            <label for="bedrooms">Number of Bedrooms:</label>
-                            <input type="number" id="bedrooms" name="bedrooms" placeholder="Enter Number of Bedrooms">
-                        </div>
+                    <div class="form-group">
+                        <label for="bedrooms">Number of Bedrooms:</label>
+                        <input type="number" id="bedrooms" name="bedrooms" placeholder="Enter Number of Bedrooms">
+                    </div>
 
-                        <div class="form-group">
-                            <label for="moveInDate">Move In Date:</label>
-                            <input type="date" id="moveInDate" name="moveInDate">
-                        </div>
-                        <div class="form-buttons">
-                            <button type="button" onclick="clearForm()">Clear</button>
-                            <button type="button" onclick="addResidence()">Add</button>
-                        </div>
-                    </form>
-                </div>
+                    <div class="form-group">
+                        <label for="moveInDate">Move In Date:</label>
+                        <input type="date" id="moveInDate" name="moveInDate">
+                    </div>
+                    <div class="form-buttons">
+                        <button type="button" onclick="clearForm()">Clear</button>
+                        <button type="button" onclick="addResidence()">Add</button>
+                    </div>
+                </form>
             </div>
-            <div id="residenceResult"></div>
         </div>
+        <div id="residenceResult"></div>
+    </div>
     </div>
 
     <script>
@@ -176,7 +176,7 @@
             document.getElementById('residenceResult').innerHTML = '';
         }
 
-        function addResidence() {
+        async function addResidence() {
             var apartmentNumber = document.getElementById('apartmentNumber').value.trim();
             var blockNumber = document.getElementById('blockNumber').value.trim();
             var streetName = document.getElementById('streetName').value.trim();
@@ -189,10 +189,31 @@
             var moveInDate = document.getElementById('moveInDate').value.trim();
 
             if (apartmentNumber && blockNumber && streetName && city && state && zipCode && squareFoot && occupants && bedrooms && moveInDate) {
-                var resultMessage = `Residence Added: ${apartmentNumber} - ${streetName}, ${city}, ${state} ${zipCode}`;
-                document.getElementById('residenceResult').innerHTML = resultMessage;
+                const response = fetch('/service-address/add', {
+                    method: 'POST',
+                    body: new URLSearchParams({
+                        'apartmentNumber': apartmentNumber,
+                        'blockNumber': deviceModel,
+                        'streetName': streetName,
+                        'city': city,
+                        'state': state,
+                        'zipCode': zipCode,
+                        'squareFoot': squareFoot,
+                        'occupants': occupants,
+                        'bedrooms': bedrooms,
+                        'moveInDate': moveInDate,
+                    }),
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded',
+                    },
+                })
+                    .then(response => response.json())
+                    .then(data => console.log(data))
+                    .catch(error => console.error('Error:', error));
+
+                const result = await response.json();
             } else {
-                document.getElementById('residenceResult').innerHTML = 'Please fill out all fields.';
+                alert("Invalid Data");
             }
         }
     </script>

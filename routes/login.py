@@ -1,7 +1,7 @@
-from flask import Flask, render_template, Blueprint, request, jsonify
+from flask import Flask, render_template, Blueprint, request, jsonify, session, redirect, url_for
 
 from db.connections import DatabaseConnection
-from misc.password_encryption import decrypt
+from misc.password_encryption import checkPassword
 
 login = Blueprint('login', __name__)
 
@@ -9,6 +9,7 @@ login = Blueprint('login', __name__)
 @login.route('/login')
 def login_view():  # put application's code here
     return render_template('login.html')
+
 
 @login.route('/login/auth', methods=['GET', 'POST'])
 def auth():
@@ -19,18 +20,24 @@ def auth():
         password = data.get('password')
         conn = DatabaseConnection()
         c = conn.connect().cursor()
-        c.execute("SELECT Cemail, Cpassword FROM customer WHERE Cemail = %s", (username, ))
+        c.execute("SELECT CustomerID, Cemail, Cpassword FROM customer WHERE LOWER(Cemail) = %s", (username,))
 
-        storeUser, storePassword = c.fetchall()[0]
-        result=""
-        if not decrypt(password,storePassword):
-            result = "Invalid Password"
+        customerID, storedUser, storedPassword = c.fetchall()[0]
+        print(customerID)
+        # result=""
+        if not checkPassword(password, storedPassword):
+            result = ""
         else:
             result = "Success"
+            # print(session['customerID'])
+            session['customerID'] = request.form[customerID]
+            return redirect(url_for('home.home_view'), 200)
+
         print(result)
-        # Return a JSON response
+        # # Return a JSON response
         return jsonify(result=result)
-        print(username, password)
+        # print(username, password)
+        # return True
     return True
 
 # def sessionValidate

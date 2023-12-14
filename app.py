@@ -1,3 +1,6 @@
+import os
+
+from dotenv import load_dotenv
 from flask import Flask, render_template, redirect, url_for
 
 from routes.device_route import device
@@ -13,6 +16,9 @@ app.register_blueprint(register)
 app.register_blueprint(home)
 app.register_blueprint(device)
 app.register_blueprint(service_location)
+
+load_dotenv()
+app.secret_key = os.getenv("SECRET_KEY")
 
 @app.route('/')
 def start():  # put application's code here

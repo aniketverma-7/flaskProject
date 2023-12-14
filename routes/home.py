@@ -1,10 +1,12 @@
-from flask import Flask, render_template, Blueprint
+from flask import Flask, render_template, Blueprint, session
 
 home = Blueprint('home', __name__)
 
 views = ['bar_graph.html', 'line_graph.html','pie_chart.html','radar_chart.html','donut_chart.html',]
 @home.route('/home')
 def home_view():
+    if 'customerID' in session:
+        print(session['customerID'])
     return render_template('home.html',data=views[0])
 
 @home.route('/change_graph_view/<view>')

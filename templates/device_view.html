@@ -65,6 +65,16 @@
                 display: none;
             }
         }
+
+         .dropdown:hover .dropdown-content {
+            display: block;
+        }
+
+        .dropdown-item {
+            padding: 8px;
+            cursor: pointer;
+        }
+
     </style>
 
 
@@ -77,6 +87,7 @@
                 <tr>
                     <th>Device Type</th>
                     <th>Device Model</th>
+                    <th>Enrolled At</th>
                     <th>Action</th>
                 </tr>
                 </thead>
@@ -85,7 +96,9 @@
                     <tr>
                         <td>{{ device[1] }}</td>
                         <td>{{ device[2] }}</td>
-                        <td><a href="#">DELETE</a></td>
+                        <td>{{ device[4]|string +" " +device[5]|string + ", "+ device[6]|string + "ST" + device[7]|string + ", "+ device[8]|string + ", " +device[9]|string }}</td>
+                        <td><a href="{{ url_for("device.deleteDevice", deviceID = device[0], sa_id = device[3]) }}">DELETE</a>
+                        </td>
                     </tr>
                 {% endfor %}
                 </tbody>
@@ -101,9 +114,9 @@
                     <label for="deviceType">Device Type:</label>
                     <select id="deviceType" name="deviceType" onchange="checkOtherOption('deviceType')">
                         <option value="" disabled selected>Select Device Type</option>
-                        <option value="laptop">Laptop</option>
-                        <option value="smartphone">Smartphone</option>
-                        <option value="tablet">Tablet</option>
+                        {% for i in dropDownList %}
+                            <option value="{{ i[1] }}">{{ i[1] }}</option>
+                        {% endfor %}
                         <option value="other">Other</option>
                     </select>
                     <input type="text" id="otherDeviceType" name="otherDeviceType" placeholder="Enter other device type"
@@ -114,10 +127,22 @@
                     <label for="deviceModel">Device Model:</label>
                     <select id="deviceModel" name="deviceModel" onchange="checkOtherOption('deviceModel')">
                         <option value="" disabled selected>Select Device Model</option>
-                        <option value="model1">Model 1</option>
-                        <option value="model2">Model 2</option>
-                        <option value="model3">Model 3</option>
+                        {% for i in dropDownList %}
+                            <option value="{{ i[2] }}">{{ i[2] }}</option>
+                        {% endfor %}
                         <option value="other">Other</option>
+                    </select>
+                    <input type="text" id="otherDeviceModel" name="otherDeviceModel"
+                           placeholder="Enter other device model" style="display: none;">
+                </div>
+
+                <div class="form-group">
+                    <label for="addressModel">Enroll At:</label>
+                    <select id="addressModel" name="addressModel" onchange="checkOtherOption('addressModel')">
+                        <option value="" disabled selected>Select Address</option>
+                        {% for i in service_address %}
+                            <option value="{{ i[0] }}">{{ i[1] }}</option>
+                        {% endfor %}
                     </select>
                     <input type="text" id="otherDeviceModel" name="otherDeviceModel"
                            placeholder="Enter other device model" style="display: none;">
@@ -157,16 +182,27 @@
             document.getElementById('otherDeviceModel').style.display = 'none';
         }
 
-        function addDevice() {
+        async function addDevice() {
             var deviceType = getSelectedValue('deviceType');
             var deviceModel = getSelectedValue('deviceModel');
 
             if (deviceType && deviceModel) {
-                // Display a message with the selected values
-                var resultMessage = `Device Added: ${deviceType} - ${deviceModel}`;
-                document.getElementById('deviceResult').innerHTML = resultMessage;
+                // Make an asynchronous request to the Flask route
+                const response = await fetch('/device/add', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded',
+                    },
+                    body: new URLSearchParams({
+                        'deviceType': deviceType,
+                        'deviceModel': deviceModel,
+                    }),
+                });
 
-                // You can perform additional actions or send data to a server here
+                const result = await response.json();
+
+                // Display the result message
+                document.getElementById('deviceResult').innerHTML = result.message;
             } else {
                 // Display an error message if both fields are not selected
                 document.getElementById('deviceResult').innerHTML = 'Please select both Device Type and Model.';

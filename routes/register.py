@@ -1,7 +1,6 @@
 from flask import Flask, render_template, Blueprint, request, jsonify
 
 from db.connections import DatabaseConnection
-from misc.password_encryption import decrypt
 
 register = Blueprint('register', __name__)
 
