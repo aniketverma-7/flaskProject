@@ -1,0 +1,26 @@
+<!-- Device-wise Energy Consumption Pie Chart -->
+<canvas id="deviceEnergyPieChart" width="400" height="400"></canvas>
+
+<script>
+    // Sample Data (Replace with actual data)
+    var deviceEnergyData = {
+        labels: ["Device 1", "Device 2", "Device 3", "Device 4"],
+        datasets: [{
+            data: [25, 30, 15, 30],
+            backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56', '#4CAF50'],
+            hoverOffset: 4
+        }]
+    };
+
+    // Get the canvas element
+    var deviceEnergyPieCanvas = document.getElementById('deviceEnergyPieChart').getContext('2d');
+
+    // Create the chart
+    var deviceEnergyPieChart = new Chart(deviceEnergyPieCanvas, {
+        type: 'pie',
+        data: deviceEnergyData,
+        options: {
+            plugins: { legend: { position: 'right' } }
+        }
+    });
+</script>

@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        nav {
+            display: flex;
+            background-color: #00aff5;
+            padding: 10px;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            padding: 10px 20px;
+            margin: 0 10px;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+
+        nav a:hover {
+            background-color: #777;
+        }
+
+        canvas {
+            max-height: 80vh; /* Adjusted for better visibility */
+            width: 100%;
+            margin: auto auto 20px;
+        }
+
+
+    </style>
+    <title>SHEMS</title>
+</head>
+
+<body>
+
+<nav>
+    <a href="{{ url_for('home.home_view') }}">Home</a>
+    <a href="{{ url_for('device.device_view', customerID = 2) }}">Devices</a>
+    <a href="{{ url_for('service_location.service_location_view', customerID = 2) }}">Service Locations</a>
+</nav>
+
+<div>
+    {% block content %}
+    {% endblock %}
+</div>
+
+
+</body>
+
+</html>

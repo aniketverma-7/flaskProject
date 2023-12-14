@@ -1,0 +1,64 @@
+<style>
+
+            .buttons-container {
+            display: flex;
+            justify-content: center;
+            margin-top: auto; /* Push to the bottom */
+        }
+
+        .graph-button {
+            padding: 10px 20px;
+            margin: 0 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .graph-button:hover {
+            background-color: #00fae2;
+        }
+        .graph-button {
+        background-color: #3498db;
+        color: #fff;
+        padding: 10px 20px;
+        margin: 0 10px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 16px;
+        transition: background-color 0.3s, transform 0.2s ease-in-out;
+    }
+
+    .graph-button:hover {
+        background-color: #2c3e50;
+    }
+
+    .graph-button:active {
+        transform: scale(0.95);
+    }
+
+    .buttons-container {
+        display: flex;
+        justify-content: center;
+        margin-top: 20px;
+    }
+
+</style>
+
+<div class="buttons-container">
+    <form action="{{ url_for('home.change_graph_view', view=0) }}" method="get">
+        <button type="submit" class="graph-button">Bar Graph</button>
+    </form>
+    <form action="{{ url_for('home.change_graph_view', view=1) }}" method="get">
+        <button type="submit" class="graph-button">Line Graph</button>
+    </form>
+    <form action="{{ url_for('home.change_graph_view', view=2) }}" method="get">
+        <button type="submit" class="graph-button">Pie Chart</button>
+    </form>
+    <form action="{{ url_for('home.change_graph_view', view=3) }}" method="get">
+        <button type="submit" class="graph-button">Radar Chart</button>
+    </form>
+    <form action="{{ url_for('home.change_graph_view', view=4) }}" method="get">
+        <button type="submit" class="graph-button">Donut Chart</button>
+    </form>
+</div>

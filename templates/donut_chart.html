@@ -1,0 +1,23 @@
+<!-- Energy Cost Donut Chart -->
+<canvas id="energyCostDonutChart" width="400" height="400"></canvas>
+
+<script>
+    // Sample Data (Replace with actual data)
+    var energyCostData = {
+        labels: ["Device 1", "Device 2", "Device 3"],
+        datasets: [{
+            data: [40, 30, 30],
+            backgroundColor: ['#FF6384', '#FF3030', '#FFCE56'],
+            hoverOffset: 4
+        }]
+    };
+
+    // Get the canvas element
+    var energyCostDonutCanvas = document.getElementById('energyCostDonutChart').getContext('2d');
+
+    // Create the chart
+    var energyCostDonutChart = new Chart(energyCostDonutCanvas, {
+        type: 'doughnut',
+        data: energyCostData
+    });
+</script>

@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login Page</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f0f0f0;
+            margin: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            flex-direction: column;
+        }
+
+        header {
+            background-color: #3498db;
+            padding: 10px;
+            text-align: center;
+            color: #fff;
+            font-size: 36px;
+            margin-bottom: 20px;
+            border-radius: 8px;
+        }
+
+        form {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: 300px;
+            transition: transform 0.3s ease-in-out;
+            text-align: center; /* Center the text within the form */
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #333;
+            text-align: left; /* Left-align the label */
+        }
+
+        input {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            box-sizing: border-box;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            transition: border-color 0.3s ease-in-out;
+        }
+
+        input:focus {
+            border-color: #3498db;
+        }
+
+        button {
+            background-color: #2ecc71;
+            color: #fff;
+            padding: 12px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            width: 100%;
+            font-size: 16px;
+            transition: background-color 0.3s ease-in-out;
+        }
+
+        button.signup {
+            background-color: #3498db;
+            margin-top: 15px; /* Adjusted margin */
+        }
+
+        button:hover {
+            background-color: #27ae60;
+        }
+
+        .loading {
+            display: none;
+            text-align: center;
+            margin-top: 15px;
+        }
+
+        .loading img {
+            width: 30px;
+            height: 30px;
+        }
+
+        /* Center the anchor tag */
+        a {
+            display: block;
+            margin-top: 10px;
+            text-align: center;
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        SHEMS
+    </header>
+
+    <form id="loginForm">
+        <label for="email">Email:</label>
+        <input type="text" id="email" name="email" required>
+
+        <label for="password">Password:</label>
+        <input type="password" id="password" name="password" required>
+
+        <button type="button" onclick="auth()">Login</button>
+        <a href="{{ url_for('register.register_view') }}">Register</a>
+    </form>
+
+ <script>
+    function auth(email, password) {
+        var userID = document.getElementById('email').value;
+        var password = document.getElementById('password').value;
+
+        // Make an AJAX request to the Flask route
+        var xhr = new XMLHttpRequest();
+        xhr.open('POST', '/login/auth', true);
+        xhr.setRequestHeader('Content-Type', 'application/json');
+
+        // Convert data to JSON format
+        var data = JSON.stringify({ userID: userID, password: password });
+
+        xhr.onload = function () {
+            if (xhr.status === 200) {
+                var response = JSON.parse(xhr.responseText);
+                if (response.result) {
+                    alert('Authentication successful');
+                    // Redirect or perform other actions upon successful authentication
+                } else {
+                    alert('Authentication failed');
+                }
+            } else {
+                console.error('Error:', xhr.statusText);
+            }
+        };
+
+        xhr.send(data);
+    }
+</script>
+</body>
+
+</html>
