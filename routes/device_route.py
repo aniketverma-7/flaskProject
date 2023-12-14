@@ -1,17 +1,17 @@
-from flask import Flask, render_template, Blueprint, url_for, redirect, request, jsonify
+from flask import Flask, render_template, Blueprint, url_for, redirect, request, jsonify, session
 
 from db.connections import DatabaseConnection
-from models.device import Device
-from routes.service_location_route import fetch_service_address
 
 device = Blueprint('device', __name__)
 
 
-@device.route('/device/<customerID>')
-def device_view(customerID):
-    address = fetch_service_address_by_customer_id(customerID)
-    return render_template('device_view.html', dropDownList=fetch_all_device(), service_address = address, devices = fetch_device_by_id(customerID))
-
+@device.route('/device')
+def device_view():
+    if 'customerID' in session:
+        customerID = str(session['customerID'])
+        address = fetch_service_address_by_customer_id(customerID)
+        return render_template('device_view.html',  name = session['customerName'], dropDownList=fetch_all_device(), service_address = address, devices = fetch_device_by_id(customerID))
+    return redirect(url_for('login.login_view'))
 
 def fetch_all_device():
     cursor = DatabaseConnection().connect().cursor()
@@ -28,7 +28,6 @@ def fetch_service_address_by_customer_id(customerID):
     for i in address:
         temp = str(i[2]) + " " + str(i[3]) + " " + str(i[4]) + " " + str(i[10]) + " " + str(i[11])
         f_address.append([i[0], temp])
-        print(temp)
     DatabaseConnection().terminate()
     return f_address
 def fetch_device_by_id(customerID):
@@ -55,27 +54,39 @@ def deleteDevice(deviceID,sa_id):
                     ''', (deviceID, sa_id))
     conn.commit()
     DatabaseConnection().terminate()
-    return redirect(url_for('device.device_view', customerID = 2))
+    return redirect(url_for('device.device_view'))
 
 
 @device.route('/device/add', methods=['POST'])
 def add_device():
-    device_type = request.form.get('deviceType')
-    device_model = request.form.get('deviceModel')
-    conn = DatabaseConnection().connect()
-    cursor = conn.cursor()
-    cursor.execute('''
-                       SELECT MAX(DeviceId) from Device;
-                        ''')
-    m = cursor.fetchall()[0][0]
-    # cursor.execute('''
-    #                 INSERT INTO Device values(%s,%s,%s)
-    #                ''', m+1, device_type, device_model)
-    #
-    # cursor.execute('''
-    #                     INSERT INTO Device values(%s,%s,%s)
-    #                    ''', m + 1, device_type, device_model)
-    conn.commit()
-    print(m)
-    DatabaseConnection().terminate()
-    return jsonify({'status': 'success', 'message': f'Device added: {device_type} - {device_model}'})
+    if request.method == 'POST':
+        try:
+            data = request.get_json()
+            device_type = data.get('deviceType')
+            device_model = data.get('deviceModel')
+            sa_id = data.get('sa_id')
+            conn = DatabaseConnection().connect()
+            cursor = conn.cursor()
+            cursor.execute('''
+                                               SELECT MAX(deviceID) from Device;
+                                                ''')
+            deviceID = cursor.fetchall()[0][0] + 1
+            #
+            cursor.execute('''
+                                   SELECT MAX(enrolledID) from Enrolled_Devices;
+                                    ''')
+            enrollID = cursor.fetchall()[0][0] + 1
+
+            cursor.execute('''
+                            INSERT INTO Device values(%s,%s,%s)
+                           ''', (deviceID, device_type, device_model))
+
+            cursor.execute('''
+                                INSERT INTO Enrolled_Devices values(%s,%s,%s)
+                               ''', (enrollID, sa_id, deviceID))
+            conn.commit()
+            DatabaseConnection().terminate()
+            return jsonify(result=True)
+        except Exception as e:
+            print(e)
+            return jsonify(result=False)

@@ -18,7 +18,7 @@
 
         nav {
             display: flex;
-            background-color: #00aff5;
+            background-color: #000000;
             padding: 10px;
         }
 
@@ -29,10 +29,12 @@
             margin: 0 10px;
             border-radius: 5px;
             transition: background-color 0.3s;
+            font-weight: bold;
+            font-size: 25px
         }
 
         nav a:hover {
-            background-color: #777;
+            background-color: rgba(255, 255, 255, 0.15);
         }
 
         canvas {
@@ -41,6 +43,9 @@
             margin: auto auto 20px;
         }
 
+        .greeting{
+            pointer-events: none;
+        }
 
     </style>
     <title>SHEMS</title>
@@ -50,8 +55,10 @@
 
 <nav>
     <a href="{{ url_for('home.home_view') }}">Home</a>
-    <a href="{{ url_for('device.device_view', customerID = 2) }}">Devices</a>
-    <a href="{{ url_for('service_location.service_location_view', customerID = 2) }}">Service Locations</a>
+    <a href="{{ url_for('device.device_view') }}">Devices</a>
+    <a href="{{ url_for('service_location.service_location_view') }}">Service Locations</a>
+    <a class="greeting" href="" style="margin-left: auto;">Welcome, {{ name }}</a>
+    <a class="your-button-class" href="{{ url_for('login.logout') }}">Logout</a>
 </nav>
 
 <div>

@@ -28,6 +28,20 @@
             flex: 5;
         }
 
+        .transparent-button {
+            background-color: rgba(0, 0, 0, 0); /* Fully transparent black */
+            border: 1px solid #fff; /* White border for better visibility */
+            color: #000000; /* Text color */
+            padding: 10px 20px;
+            font-weight: bold;
+            font-size: 15px;
+            text-decoration: none;
+            transition: background-color 0.3s;
+        }
+
+        .transparent-button:hover {
+            background-color: rgba(0, 0, 0, 0.3); /* Slightly transparent black on hover */
+        }
 
         .form-container {
             max-width: 400px; /* Adjust the maximum width as needed */
@@ -63,7 +77,7 @@
     <div class="container">
         <div class="scrollable-section left-section">
             <!-- Content for the first section goes here -->
-            <h2>Service Locations</h2>
+            <h2>Service Locations: {{ service_locations|length }}</h2>
             <table>
                 <thead>
                 <tr>
@@ -95,7 +109,11 @@
                         <td>{{ service_address[9] }}</td>
                         <td>{{ service_address[10] }}</td>
                         <td>{{ service_address[11] }}</td>
-                        <td><a href="#">DELETE</a></td>
+                        <td>
+                            <button class="transparent-button" onclick="deleteResidence({{ service_address[0] }})">
+                                DELETE
+                            </button>
+                        </td>
                     </tr>
                 {% endfor %}
                 </tbody>
@@ -157,8 +175,9 @@
 
                     <div class="form-group">
                         <label for="moveInDate">Move In Date:</label>
-                        <input type="date" id="moveInDate" name="moveInDate">
+                        <input type="date" id="moveInDate" name="moveInDate" max="{{ current_date }}">
                     </div>
+
                     <div class="form-buttons">
                         <button type="button" onclick="clearForm()">Clear</button>
                         <button type="button" onclick="addResidence()">Add</button>
@@ -171,12 +190,50 @@
     </div>
 
     <script>
+        document.getElementById('moveInDate').max = new Date().toISOString().split('T')[0];
+
         function clearForm() {
             document.getElementById('residenceForm').reset();
             document.getElementById('residenceResult').innerHTML = '';
         }
 
-        async function addResidence() {
+        function deleteResidence(sa_id) {
+            console.log(sa_id);
+
+            // Your existing code for sending the delete request
+            fetch('/service-location/delete', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    sa_id: sa_id,
+                }),
+            })
+                .then(response => {
+                    console.log(response.headers.toString());
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    // Handle successful deletion
+                    if (!data.result) {
+                        alert('Server Error');
+                    } else {
+                        // Redirect to the service_location page
+                        window.location.href = '/service-location';
+                    }
+                })
+                .catch(error => {
+                    // Handle errors, including non-JSON responses
+                    console.log(error);
+                    console.error('Error during deletion:', error);
+                });
+        }
+
+        function addResidence() {
             var apartmentNumber = document.getElementById('apartmentNumber').value.trim();
             var blockNumber = document.getElementById('blockNumber').value.trim();
             var streetName = document.getElementById('streetName').value.trim();
@@ -189,31 +246,46 @@
             var moveInDate = document.getElementById('moveInDate').value.trim();
 
             if (apartmentNumber && blockNumber && streetName && city && state && zipCode && squareFoot && occupants && bedrooms && moveInDate) {
-                const response = fetch('/service-address/add', {
+                fetch('/service-address/add', {
                     method: 'POST',
-                    body: new URLSearchParams({
-                        'apartmentNumber': apartmentNumber,
-                        'blockNumber': deviceModel,
-                        'streetName': streetName,
-                        'city': city,
-                        'state': state,
-                        'zipCode': zipCode,
-                        'squareFoot': squareFoot,
-                        'occupants': occupants,
-                        'bedrooms': bedrooms,
-                        'moveInDate': moveInDate,
+                    body: JSON.stringify({
+                        apartmentNumber: apartmentNumber,
+                        blockNumber: blockNumber,
+                        streetName: streetName,
+                        city: city,
+                        state: state,
+                        zipCode: zipCode,
+                        squareFoot: squareFoot,
+                        occupants: occupants,
+                        bedrooms: bedrooms,
+                        moveInDate: moveInDate,
                     }),
                     headers: {
-                        'Content-Type': 'application/x-www-form-urlencoded',
+                        'Content-Type': 'application/json',
                     },
+                }).then(response => {
+                    console.log(response.headers.toString());
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    return response.json();
                 })
-                    .then(response => response.json())
-                    .then(data => console.log(data))
-                    .catch(error => console.error('Error:', error));
-
-                const result = await response.json();
+                    .then(data => {
+                        // Handle successful deletion
+                        if (!data.result) {
+                            alert('Server Error');
+                        } else {
+                            // Redirect to the service_location page
+                            window.location.href = '/service-location';
+                        }
+                    })
+                    .catch(error => {
+                        // Handle errors, including non-JSON responses
+                        console.log(error);
+                        console.error('Error during deletion:', error);
+                    });
             } else {
-                alert("Invalid Data");
+                alert('Invalid Service Address')
             }
         }
     </script>

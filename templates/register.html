@@ -18,7 +18,7 @@
         }
 
         header {
-            background-color: #3498db;
+            background-color: #000000;
             padding: 10px;
             text-align: center;
             color: #fff;
@@ -59,7 +59,7 @@
         }
 
         button {
-            background-color: #2ecc71;
+            background-color: #010703;
             color: #fff;
             padding: 12px;
             border: none;
@@ -70,13 +70,9 @@
             transition: background-color 0.3s ease-in-out;
         }
 
-        button.signup {
-            background-color: #3498db;
-            margin-top: 15px; /* Adjusted margin */
-        }
 
         button:hover {
-            background-color: #27ae60;
+            background-color: rgba(0, 0, 0, 0.27);
         }
 
         .loading {
@@ -131,25 +127,53 @@
             var baddress = document.getElementById('baddress').value;
             var rpassword = document.getElementById('rpassword').value;
             var name = document.getElementById('name').value;
+            var emailRegex = /^[a-zA-Z0-9]+@[a-zA-Z]+\.[a-zA-Z]+$/;
 
-            // Make an AJAX request to call Python method
-            var xhr = new XMLHttpRequest();
-            xhr.open('POST', '/call_python_method', true);
-            xhr.setRequestHeader('Content-Type', 'application/json');
+            if(email.length == 0 && password.length == 0 && baddress.length == 0 && rpassword.length == 0 && name.length == 0){
+                alert("All Field is required")
+            }else if(password != rpassword){
+                alert("Password does not match")
+            }else if(password.length <8){
+                alert("Password should be at least 8 characters")
+            }else if(baddress.length <10 || emailRegex.test(baddress){
+                alert("Invalid Address");
+            }
+            else if(!emailRegex.test(email)){
+                alert('Invalid Email Address')
+            }else{
+                  fetch('/register/user', {
+                      method: 'POST',
+                      headers: {
+                          'Content-Type': 'application/json',
+                      },
+                      body: JSON.stringify({
+                          name: name,
+                          email: email,
+                          password: password,
+                          baddress: baddress
+                      })
+                  }).then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    // Handle successful login
+                    console.log(data.result)
+                    if (!data.result) {
+                        alert(data.error)
+                    } else {
+                        window.location.href = 'login'
+                    }
+                })
+                .catch(error => {
+                    // Handle errors, including non-JSON responses
+                    console.error('Error during Registeration:', error);
+                });
+            }
 
-            // Convert data to JSON format
-            var data = JSON.stringify({ userID: userID, password: password , baddress: baddress, name: name});
 
-            xhr.onload = function () {
-                if (xhr.status === 200) {
-                    var response = JSON.parse(xhr.responseText);
-                    alert(response.result); // Display the result from the Python method
-                } else {
-                    console.error('Error:', xhr.statusText);
-                }
-            };
-
-            xhr.send(data);
         }
     </script>
 </body>

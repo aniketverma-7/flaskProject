@@ -13,31 +13,31 @@ def login_view():  # put application's code here
 
 @login.route('/login/auth', methods=['GET', 'POST'])
 def auth():
+    print("Authenticating................")
     if request.method == 'POST':
         # Handle the AJAX request
-        data = request.get_json()
-        username = str(data.get('email')).lower()
-        password = data.get('password')
-        conn = DatabaseConnection()
-        c = conn.connect().cursor()
-        c.execute("SELECT CustomerID, Cemail, Cpassword FROM customer WHERE LOWER(Cemail) = %s", (username,))
+        try:
+            data = request.get_json()
+            username = str(data.get('email')).lower()
+            password = data.get('password')
+            conn = DatabaseConnection()
+            c = conn.connect().cursor()
+            c.execute("SELECT CustomerID, CName, Cemail, Cpassword FROM customer WHERE LOWER(Cemail) = %s", (username,))
+            customerID, customerName, storedUser, storedPassword = c.fetchall()[0]
+            if not checkPassword(password, storedPassword):
+                print("Authentication failed")
+                raise "User not found"
+            else:
+                print( "Authentication Successful")
+                session['customerName'] = customerName.split()[0]
+                session['customerID'] = customerID
+                return  jsonify(result=True)
+        except Exception as e:
+            return jsonify(result=False)
 
-        customerID, storedUser, storedPassword = c.fetchall()[0]
-        print(customerID)
-        # result=""
-        if not checkPassword(password, storedPassword):
-            result = ""
-        else:
-            result = "Success"
-            # print(session['customerID'])
-            session['customerID'] = request.form[customerID]
-            return redirect(url_for('home.home_view'), 200)
+@login.route('/logout', methods=['GET', 'POST'])
+def logout():
+    session.pop('customerID', None)
+    session.pop('customerName', None)
+    return redirect(url_for('login.login_view'))
 
-        print(result)
-        # # Return a JSON response
-        return jsonify(result=result)
-        # print(username, password)
-        # return True
-    return True
-
-# def sessionValidate
